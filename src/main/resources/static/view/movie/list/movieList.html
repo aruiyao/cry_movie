@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title></title>
+
+  <link rel="stylesheet" href="/movie/css/bootstrap.css">
+  <link rel="stylesheet" href="/movie/css/reset.css">
+  <link rel="stylesheet" href="/movie/css/app.css">
+  <link rel="stylesheet" href="/movie/css/index.css">
+
+  <script src="/movie/3rd/jquery.js"></script>
+  <script src="/movie/3rd/bootstrap.js"></script>
+  <script src="/movie/3rd/angular-1.4.6.js"></script>
+  <script src="movieList.js"></script>
+</head>
+
+<body ng-app="movieListApp" ng-controller="movieListCtrl" ng-init="init()" ng-cloak>
+
+  <div class="container" style="margin-bottom: 100px;">
+    <div class="margin-top-30"></div>
+    <div class="title">全部影片</div>
+    <div class="margin-top-30"></div>
+    <div class="timeLayout">
+
+      <ul class="time-list">
+
+        <li class="time-item" ng-class="{true:'left',false:'right'}[$index%2===0]" style="height:100%" ng-repeat="item in movieList track by $index">
+          <span class="timedot">●</span>
+
+          <div class="item-inner margin-left-100">
+            <img ng-src="{{downUrl + '?imageName=' + item.picture}}" width="254" height="317" ng-click="gotoDetail(item.id)"
+              style="cursor:pointer">
+            <div class="margin-top-10"></div>
+            <div class="filmInfo">
+              <h3>
+                <a class="mdbColor" ng-click="gotoDetail(item.id)">
+                  <span ng-bind="item.releaseTime"></span>&nbsp;&nbsp;上映</br>
+                  <span ng-bind="item.name"></span>
+                </a>
+              </h3>
+              <p class="score">
+                <label>评分:</label>
+                <span class="badge" style="color: orange; font-weight: bold;">
+                  <span ng-show="item.score!=null" ng-bind="item.score"></span>
+                  <span ng-show="item.score==null">暂无评分</span>
+                </span>
+              </p>
+              <p class="direct">
+                <label>导演:</label>
+                <span ng-bind="item.director"></span>
+              </p>
+              <p>
+                <label>主演:</label>
+                <span ng-bind="item.leadRole"></span>
+              </p>
+
+              <p>
+                <label>类型:</label>
+                <span ng-show="item.type===1">喜剧</span>
+                <span ng-show="item.type===2">爱情</span>
+                <span ng-show="item.type===3">动作</span>
+              </p>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <div class="midLine"></div>
+    </div>
+
+  </div>
+</body>
+
+</html>

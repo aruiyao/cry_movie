@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title></title>
+
+  <link rel="stylesheet" href="/movie/css/bootstrap.css">
+  <link rel="stylesheet" href="/movie/css/app.css">
+  <link rel="stylesheet" href="/movie/css/details.css">
+  <link rel="stylesheet" href="/movie/css/reset.css">
+  <link rel="stylesheet" href="/movie/css/bootstrapValidator.css">
+
+  <script src="/movie/3rd/jquery.js"></script>
+  <script src="/movie/3rd/bootstrap.js"></script>
+  <script src="/movie/3rd/angular-1.4.6.js"></script>
+  <script src="/movie/3rd/bootstrapValidator.js"></script>
+  <script src="movieDetail.js"></script>
+  <style>
+    .span2{
+    width: 75px;
+  }
+  .span3{
+    width: 450px;
+  }
+  </style>
+</head>
+
+<body ng-app="movieDetailApp" ng-controller="movieDetailCtrl" ng-init="init()" ng-cloak>
+
+  <div class="main-part" style="margin-bottom: 100px">
+    <div class="container">
+      <!-- <div class="col-md-1"></div>
+      <div class="col-md-10">
+        
+      </div> -->
+      <div class="part1">
+        <div class="margin-top-10"></div>
+        <div class="space">
+          <div class="pull-left" style="width: 25%">
+            <img ng-src="{{downUrl + '?imageName=' + movie.picture}}" style="width: 100%">
+          </div>
+          <div class="pull-left margin-left-30" style="width: 60%">
+            <div class="film-name" ng-bind="movie.name"></div>
+            <div class="margin-top-30"></div>
+            <table class="table table-condensd table-striped table-bordered" style="font-size:12px;table-layout: fixed">
+              <tbody>
+                <tr>
+                  <td class="span2"><span class="x-m-label">导演</span></td>
+                  <td class="span3" ng-bind="movie.director"></td>
+                </tr>
+                <tr>
+                  <td class="span2"><span class="x-m-label">主演</span></td>
+                  <td class="span3" ng-bind="movie.leadRole"></td>
+                </tr>
+                <tr>
+                  <td class="span2"><span class="x-m-label">编剧</span></td>
+                  <td class="span3" ng-bind="movie.screenwriter"></td>
+                </tr>
+                <tr>
+                  <td class="span2">
+                    <span class="x-m-label">类型</span>
+                  </td>
+                  <td class="span3">剧情 / 犯罪</td>
+                </tr>
+                <!-- <tr>
+                    <td class="span2"><span class="x-m-label">地区</span></td>
+                    <td> 美国</td>
+                  </tr>
+                  <tr>
+                    <td class="span2"><span class="x-m-label">语言</span></td>
+                    <td>英语</td>
+                  </tr> -->
+                <tr>
+                  <td class="span2"><span class="x-m-label">上映时间</span></td>
+                  <td class="span3" ng-bind="movie.releaseTime"></td>
+                </tr>
+                <tr>
+                  <td class="span2"><span class="x-m-label">片长</span></td>
+                  <td class="span3"><span ng-bind="movie.filmLength"></span>分钟</td>
+                </tr>
+                <tr>
+                  <td class="span2"><span class="x-m-label">别名</span></td>
+                  <td class="span3" ng-bind="movie.alias"></td>
+                </tr>
+                <tr class="x-m-rating">
+                  <td class="span2">
+                    <span class="x-m-label">评分</span></td>
+                  <td class="span3">
+                    <span class="badge" style="color: orange; font-weight: bold;">
+                        <span ng-show="movie.score!=null" ng-bind="movie.score"></span>
+                        <span ng-show="movie.score==null">暂无评分</span>
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+      <div class="margin-top-10"></div>
+      <div class="part2">
+        <div class="descri">
+          <div class="descri-title">剧情介绍</div>
+          <div class="margin-top-20"></div>
+          <div class="descri-content" ng-bind="movie.synopsis"></div>
+        </div>
+      </div>
+      <div class="margin-top-10"></div>
+      <div class="part3">
+        <div class="comments">
+          <div class="comment-title ">评论</div>
+          <div class="margin-top-20"></div>
+          <div class="comment-content">
+            <div class="short-comment">
+              <div class="pull-left">
+                <span class="green">
+                  <span ng-bind="movie.name"></span>的短评......
+                </span><a href="#">
+                  <span class="blue">
+                    <span ng-show="total>0"> （全部{{total}}条）</span>
+                    <span ng-show="total===0"> （暂无评论）</span>
+                  </span>
+                </a>
+              </div>
+              <div class="pull-right red"><a data-toggle="modal" ng-click="showAdd()">我来说两句</a></div>
+              <div class=" clearfix">
+              </div>
+            </div>
+            <div class="margin-top-10"></div>
+            <div class="comment-list" ng-repeat="item in reviewList track by $index">
+              <div class="list-title">
+                <div class="pull-left">
+                  <a class="blue" ng-bind="item.userName"></a>
+                </div>
+                <div class="pull-left allstar{{item.score}}"></div>
+                <div class="pull-left gray" ng-bind="item.createTime|newdate">
+                </div>
+                <div class="clearfix"></div>
+              </div>
+              <div class="list-content" ng-bind="item.review"></div>
+            </div>
+            <div class="margin-top-20"></div>
+          </div>
+          <div class="col-md-1"></div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="comment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">添加评论</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row-fluid">
+            <div class="form-horizontal" id="form_comment">
+
+              <div class="form-group">
+                <label class="col-sm-3 control-label">评分</label>
+
+                <div class="col-sm-5">
+                  <input type="number" class="form-control" id="score" ng-model="score" placeholder="请打个分哦" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-3 control-label">评论</label>
+
+                <div class="col-sm-5">
+                  <textarea class="form-control" id="review" name="review" ng-model="review" placeholder="请输入简评"></textarea>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-10">
+                  <button type="submit" class="btn btn-primary" id="login-submit" ng-click="submit()"  data-dismiss="modal">
+                    提交
+                  </button>
+                  <button type="button" class="btn btn-default margin-left-40" data-dismiss="modal">关闭</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
